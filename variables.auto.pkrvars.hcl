@@ -1,0 +1,6 @@
+resource_group_build   = "rg-imagebuilder-lab"
+resource_group_gallery = "rg-imagegallery-lab"
+gallery_name           = "acg_avd_lab"
+image_definition       = "win11-avd-base"
+location               = "East US"
+vm_size                = "Standard_B2s"

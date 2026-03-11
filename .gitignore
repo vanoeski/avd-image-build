@@ -1,0 +1,7 @@
+# Exclude any local variable files with secrets
+*.pkrvars.hcl
+!variables.auto.pkrvars.hcl
+
+# Packer build artifacts
+packer_cache/
+*.pkrerr

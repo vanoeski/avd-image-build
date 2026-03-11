@@ -1,0 +1,54 @@
+name: Build AVD Image
+
+on:
+  workflow_dispatch:          # Manual trigger from GitHub UI
+    inputs:
+      reason:
+        description: 'Reason for manual build'
+        required: false
+        default: 'Manual build'
+#  schedule:
+#    - cron: '0 2 * * 0'       # Weekly Sunday 2am UTC
+
+permissions:
+  id-token: write             # Required for OIDC
+  contents: read
+
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Install Packer
+        uses: hashicorp/setup-packer@main
+        with:
+          version: latest
+
+      - name: Packer init
+        run: packer init .
+
+      - name: Packer validate
+        run: |
+          packer validate \
+            -var 'subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' \
+            -var 'tenant_id=${{ secrets.AZURE_TENANT_ID }}' \
+            -var 'client_id=${{ secrets.AZURE_CLIENT_ID }}' \
+            .
+
+      - name: Packer build
+        run: |
+          packer build \
+            -var 'subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' \
+            -var 'tenant_id=${{ secrets.AZURE_TENANT_ID }}' \
+            -var 'client_id=${{ secrets.AZURE_CLIENT_ID }}' \
+            .
