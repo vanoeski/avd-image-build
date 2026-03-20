@@ -43,9 +43,6 @@ source "azure-arm" "win11_avd" {
     image_version       = formatdate("YYYY.MM.DD", timestamp())
     replication_regions = [var.location]
   }
-
-  # Generalize (sysprep) before capture
-  generalize_with_sysprep = true
 }
 
 build {
