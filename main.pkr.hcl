@@ -13,7 +13,6 @@ source "azure-arm" "win11_avd" {
   subscription_id    = var.subscription_id
 
   # Build VM location
-  location         = var.location
   vm_size          = var.vm_size
   build_resource_group_name = var.resource_group_build
 
