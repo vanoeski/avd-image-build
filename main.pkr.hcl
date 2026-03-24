@@ -15,6 +15,7 @@ source "azure-arm" "win11_avd" {
   # Build VM location
   location         = var.location
   vm_size          = var.vm_size
+  build_resource_group_name = var.resource_group_build
 
   # Source image — Windows 11 multi-session 23H2
   image_publisher = "MicrosoftWindowsDesktop"
